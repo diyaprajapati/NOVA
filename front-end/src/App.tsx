@@ -10,6 +10,8 @@ import { Toaster } from "./components/ui/sonner";
 import Index from "./pages/Index";
 import { CartProvider } from "./providers/CardProvider";
 import { WishlistProvider } from "./providers/WishlistProvider";
+import Categories from "./pages/Categories";
+import About from "./pages/About";
 
 
 const queryClient = new QueryClient();
@@ -27,6 +29,9 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:id" element={<ProductDetail />} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/categories/:id" element={<Categories />} />
+                <Route path="/about" element={<About />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 {/* <Route path="*" element={<NotFound />} /> */}
               </Routes>

@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Search, Menu, X } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, Heart } from "lucide-react";
 
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "../ui/ThemeToggle";
 import { Button } from "../ui/button";
+import { SearchDialog } from "../search/SearchDialog";
+import { useWishlist } from "../../providers/WishlistProvider";
+import { useCart } from "../../providers/CardProvider";
 
 export function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const { items: cart } = useCart();
+    const { items: wishlist } = useWishlist();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -51,16 +57,33 @@ export function Header() {
                 <div className="flex items-center space-x-2">
                     <ThemeToggle />
 
-                    <Button variant="ghost" size="icon" className="rounded-full">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full"
+                        onClick={() => setIsSearchOpen(true)}
+                    >
                         <Search className="h-5 w-5" />
                         <span className="sr-only">Search</span>
                     </Button>
 
                     <Button variant="ghost" size="icon" className="rounded-full relative">
+                        <Heart className="h-5 w-5" />
+                        {wishlist.length > 0 && (
+                            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
+                                {wishlist.length}
+                            </span>
+                        )}
+                        <span className="sr-only">Wishlist</span>
+                    </Button>
+
+                    <Button variant="ghost" size="icon" className="rounded-full relative">
                         <ShoppingCart className="h-5 w-5" />
-                        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
-                            3
-                        </span>
+                        {cart.length > 0 && (
+                            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
+                                {cart.length}
+                            </span>
+                        )}
                         <span className="sr-only">Shopping cart</span>
                     </Button>
 
@@ -110,6 +133,11 @@ export function Header() {
                     </div>
                 </div>
             )}
+
+            <SearchDialog
+                open={isSearchOpen}
+                onOpenChange={setIsSearchOpen}
+            />
         </header>
     );
 }
