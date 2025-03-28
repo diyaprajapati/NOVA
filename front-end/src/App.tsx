@@ -12,6 +12,10 @@ import { CartProvider } from "./providers/CardProvider";
 import { WishlistProvider } from "./providers/WishlistProvider";
 import Categories from "./pages/Categories";
 import About from "./pages/About";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import BrandDashboard from "./pages/brand/Dashboard";
+import AddProduct from "./pages/brand/AddProduct";
 
 
 const queryClient = new QueryClient();
@@ -32,6 +36,10 @@ const App = () => (
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/categories/:id" element={<Categories />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/sign-in" element={<SignIn />} />
+                <Route path="/sign-up" element={<SignUp />} />
+                <Route path="/brand/dashboard" element={<BrandDashboard />} />
+                <Route path="/brand/products/add" element={<AddProduct />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 {/* <Route path="*" element={<NotFound />} /> */}
               </Routes>

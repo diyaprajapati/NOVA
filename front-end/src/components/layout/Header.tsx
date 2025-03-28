@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Search, Menu, X, Heart } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, Heart, User } from "lucide-react";
 
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "../ui/ThemeToggle";
@@ -12,8 +12,8 @@ export function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const { items: cart } = useCart();
-    const { items: wishlist } = useWishlist();
+    const { items: cartItems } = useCart();
+    const { items: wishlistItems } = useWishlist();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -69,9 +69,9 @@ export function Header() {
 
                     <Button variant="ghost" size="icon" className="rounded-full relative">
                         <Heart className="h-5 w-5" />
-                        {wishlist.length > 0 && (
+                        {wishlistItems.length > 0 && (
                             <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
-                                {wishlist.length}
+                                {wishlistItems.length}
                             </span>
                         )}
                         <span className="sr-only">Wishlist</span>
@@ -79,13 +79,20 @@ export function Header() {
 
                     <Button variant="ghost" size="icon" className="rounded-full relative">
                         <ShoppingCart className="h-5 w-5" />
-                        {cart.length > 0 && (
+                        {cartItems.length > 0 && (
                             <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
-                                {cart.length}
+                                {cartItems.length}
                             </span>
                         )}
                         <span className="sr-only">Shopping cart</span>
                     </Button>
+
+                    <Link to="/sign-in">
+                        <Button variant="ghost" size="icon" className="rounded-full">
+                            <User className="h-5 w-5" />
+                            <span className="sr-only">Account</span>
+                        </Button>
+                    </Link>
 
                     <Button
                         variant="ghost"
@@ -129,6 +136,20 @@ export function Header() {
                             onClick={() => setIsMenuOpen(false)}
                         >
                             About
+                        </Link>
+                        <Link
+                            to="/sign-in"
+                            className="p-3 hover:bg-primary/5 rounded-md transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            Sign In
+                        </Link>
+                        <Link
+                            to="/sign-up"
+                            className="p-3 hover:bg-primary/5 rounded-md transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            Sign Up
                         </Link>
                     </div>
                 </div>
