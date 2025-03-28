@@ -8,25 +8,31 @@ import ProductDetail from "./pages/ProductDetail";
 import { ThemeProvider } from "./providers/ThemeProvider";
 import { Toaster } from "./components/ui/sonner";
 import Index from "./pages/Index";
+import { CartProvider } from "./providers/CardProvider";
+import { WishlistProvider } from "./providers/WishlistProvider";
 
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="system">
+    <ThemeProvider defaultTheme="dark">
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            {/* <Route path="*" element={<NotFound />} /> */}
-          </Routes>
-        </BrowserRouter>
+        <WishlistProvider>
+          <CartProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:id" element={<ProductDetail />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                {/* <Route path="*" element={<NotFound />} /> */}
+              </Routes>
+            </BrowserRouter>
+          </CartProvider>
+        </WishlistProvider>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>

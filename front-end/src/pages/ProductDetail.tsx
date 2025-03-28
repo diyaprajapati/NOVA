@@ -16,11 +16,15 @@ import { Header } from "../components/layout/Header";
 import { Button } from "../components/ui/button";
 import { Footer } from "../components/layout/Footer";
 import { ProductCard } from "../components/ui/ProductCard";
+import { useCart } from "../providers/CardProvider";
+import { useWishlist } from "../providers/WishlistProvider";
 
 
 export default function ProductDetail() {
     const { id } = useParams<{ id: string }>();
     const [quantity, setQuantity] = useState(1);
+    const { addToCart } = useCart();
+    const { isInWishlist, toggleWishlist } = useWishlist();
 
     const product = products.find(p => p.id === id);
 
@@ -43,6 +47,8 @@ export default function ProductDetail() {
             </>
         );
     }
+
+    const isLiked = isInWishlist(product.id);
 
     const relatedProducts = products
         .filter(p => p.category === product.category && p.id !== product.id)
@@ -94,8 +100,8 @@ export default function ProductDetail() {
                                             <Star
                                                 key={i}
                                                 className={`h-5 w-5 ${i < Math.floor(product.rating)
-                                                        ? "text-amber-400 fill-amber-400"
-                                                        : "text-muted"
+                                                    ? "text-amber-400 fill-amber-400"
+                                                    : "text-muted"
                                                     }`}
                                             />
                                         ))}
@@ -128,8 +134,13 @@ export default function ProductDetail() {
                                         </button>
 
                                         <div className="ml-auto flex items-center space-x-2">
-                                            <Button size="icon" variant="outline" className="rounded-full">
-                                                <Heart className="h-5 w-5" />
+                                            <Button
+                                                size="icon"
+                                                variant="outline"
+                                                className={`rounded-full ${isLiked ? 'text-red-500 hover:text-red-600' : ''}`}
+                                                onClick={() => toggleWishlist(product)}
+                                            >
+                                                <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
                                                 <span className="sr-only">Add to wishlist</span>
                                             </Button>
                                             <Button size="icon" variant="outline" className="rounded-full">
@@ -139,7 +150,13 @@ export default function ProductDetail() {
                                         </div>
                                     </div>
 
-                                    <Button size="lg" className="w-full">Add to Cart</Button>
+                                    <Button
+                                        size="lg"
+                                        className="w-full"
+                                        onClick={() => addToCart(product, quantity)}
+                                    >
+                                        Add to Cart
+                                    </Button>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 border-t border-b py-6 mb-6">

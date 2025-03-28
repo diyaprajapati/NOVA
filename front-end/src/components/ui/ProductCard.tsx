@@ -3,6 +3,8 @@ import { Heart, Star } from "lucide-react";
 import { useState } from "react";
 import { Product } from "../../lib/data";
 import { Button } from "./button";
+import { useCart } from "../../providers/CardProvider";
+import { useWishlist } from "../../providers/WishlistProvider";
 
 interface ProductCardProps {
     product: Product;
@@ -11,6 +13,10 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [isHovered, setIsHovered] = useState(false);
+    const { addToCart } = useCart();
+    const { isInWishlist, toggleWishlist } = useWishlist();
+
+    const isLiked = isInWishlist(product.id);
 
     return (
         <div
@@ -68,9 +74,13 @@ export function ProductCard({ product }: ProductCardProps) {
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="rounded-full -mt-1 -mr-2 h-9 w-9 transition-all opacity-0 group-hover:opacity-100"
+                        className={`rounded-full -mt-1 -mr-2 h-9 w-9 transition-all ${isLiked ? 'opacity-100 text-red-500 hover:text-red-600' : 'opacity-0 group-hover:opacity-100'}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            toggleWishlist(product);
+                        }}
                     >
-                        <Heart className="h-[18px] w-[18px]" />
+                        <Heart className={`h-[18px] w-[18px] ${isLiked ? 'fill-current' : ''}`} />
                         <span className="sr-only">Add to wishlist</span>
                     </Button>
                 </div>
@@ -97,6 +107,10 @@ export function ProductCard({ product }: ProductCardProps) {
                     <Button
                         size="sm"
                         className="rounded-full py-1.5 h-auto text-sm transition-all transform hover:scale-105"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            addToCart(product);
+                        }}
                     >
                         Add to Cart
                     </Button>
