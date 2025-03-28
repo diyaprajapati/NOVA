@@ -7,8 +7,13 @@ import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 
 export function WishlistSidebar() {
-    const { items, toggleWishlist } = useWishlist();
+    const { items, toggleWishlist, removeFromWishlist } = useWishlist();
     const { addToCart } = useCart();
+
+    const handleAddToCart = (productId: string, product: any) => {
+        addToCart(product, 1);
+        removeFromWishlist(productId);
+    };
 
     return (
         <Sheet>
@@ -68,7 +73,8 @@ export function WishlistSidebar() {
                                                 variant="outline"
                                                 size="icon"
                                                 className="h-8 w-8"
-                                                onClick={() => addToCart(product, 1)}
+                                                // onClick={() => addToCart(product, 1)}
+                                                onClick={() => handleAddToCart(product.id, product)}
                                             >
                                                 <ShoppingBag className="h-4 w-4" />
                                             </Button>

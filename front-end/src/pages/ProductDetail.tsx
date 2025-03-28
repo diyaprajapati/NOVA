@@ -24,7 +24,7 @@ export default function ProductDetail() {
     const { id } = useParams<{ id: string }>();
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
-    const { isInWishlist, toggleWishlist } = useWishlist();
+    const { isInWishlist, toggleWishlist, removeFromWishlist } = useWishlist();
 
     const product = products.find(p => p.id === id);
 
@@ -48,11 +48,18 @@ export default function ProductDetail() {
         );
     }
 
-    const isLiked = isInWishlist(product.id);
+    const isLiked = isInWishlist(product!.id);
 
     const relatedProducts = products
-        .filter(p => p.category === product.category && p.id !== product.id)
+        .filter(p => p.category === product!.category && p.id !== product!.id)
         .slice(0, 4);
+
+    const handleAddToCart = () => {
+        addToCart(product!, quantity);
+        if (isLiked) {
+            removeFromWishlist(product!.id);
+        }
+    };
 
     return (
         <>
@@ -138,7 +145,7 @@ export default function ProductDetail() {
                                                 size="icon"
                                                 variant="outline"
                                                 className={`rounded-full ${isLiked ? 'text-red-500 hover:text-red-600' : ''}`}
-                                                onClick={() => toggleWishlist(product)}
+                                                onClick={() => toggleWishlist(product!)}
                                             >
                                                 <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
                                                 <span className="sr-only">Add to wishlist</span>
@@ -153,7 +160,7 @@ export default function ProductDetail() {
                                     <Button
                                         size="lg"
                                         className="w-full"
-                                        onClick={() => addToCart(product, quantity)}
+                                        onClick={handleAddToCart}
                                     >
                                         Add to Cart
                                     </Button>

@@ -14,9 +14,16 @@ export function ProductCard({ product }: ProductCardProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [isHovered, setIsHovered] = useState(false);
     const { addToCart } = useCart();
-    const { isInWishlist, toggleWishlist } = useWishlist();
+    const { isInWishlist, toggleWishlist, removeFromWishlist } = useWishlist();
 
     const isLiked = isInWishlist(product.id);
+
+    const handleAddToCart = () => {
+        addToCart(product);
+        if (isLiked) {
+            removeFromWishlist(product.id);
+        }
+    };
 
     return (
         <div
@@ -109,7 +116,8 @@ export function ProductCard({ product }: ProductCardProps) {
                         className="rounded-full py-1.5 h-auto text-sm transition-all transform hover:scale-105"
                         onClick={(e) => {
                             e.preventDefault();
-                            addToCart(product);
+                            // addToCart(product);
+                            handleAddToCart();
                         }}
                     >
                         Add to Cart
