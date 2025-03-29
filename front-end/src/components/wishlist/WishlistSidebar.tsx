@@ -1,18 +1,22 @@
-import { Heart, ShoppingBag, Trash2 } from "lucide-react";
+import { Heart, LogIn, ShoppingBag, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useWishlist } from "../../providers/WishlistProvider";
 import { useCart } from "../../providers/CardProvider";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
+import { useAuth } from "../../providers/AuthProvider";
 
 export function WishlistSidebar() {
     const { items, toggleWishlist, removeFromWishlist } = useWishlist();
     const { addToCart } = useCart();
+    const { isAuthenticated, requireAuth } = useAuth();
 
     const handleAddToCart = (productId: string, product: any) => {
-        addToCart(product, 1);
-        removeFromWishlist(productId);
+        requireAuth(() => {
+            addToCart(product, 1);
+            removeFromWishlist(productId);
+        });
     };
 
     return (
@@ -20,7 +24,7 @@ export function WishlistSidebar() {
             <SheetTrigger asChild>
                 <Button variant="outline" size="icon" className="relative">
                     <Heart className="h-5 w-5" />
-                    {items.length > 0 && (
+                    {isAuthenticated && items.length > 0 && (
                         <span className="absolute -top-2 -right-2 h-5 w-5 bg-primary text-primary-foreground text-xs flex items-center justify-center rounded-full">
                             {items.length}
                         </span>
@@ -29,10 +33,19 @@ export function WishlistSidebar() {
             </SheetTrigger>
             <SheetContent className="flex flex-col w-full sm:max-w-md">
                 <SheetHeader>
-                    <SheetTitle>Your Wishlist ({items.length})</SheetTitle>
+                    <SheetTitle>Your Wishlist {isAuthenticated && `(${items.length})`}</SheetTitle>
                 </SheetHeader>
 
-                {items.length === 0 ? (
+                {!isAuthenticated ? (
+                    <div className="flex-1 flex flex-col items-center justify-center">
+                        <LogIn className="h-12 w-12 text-muted-foreground mb-4" />
+                        <p className="text-lg font-medium mb-2">Sign in to view your wishlist</p>
+                        <p className="text-muted-foreground mb-6">You need to be signed in to use the wishlist feature</p>
+                        <Button asChild>
+                            <Link to="/sign-in">Sign In</Link>
+                        </Button>
+                    </div>
+                ) : items.length === 0 ? (
                     <div className="flex-1 flex flex-col items-center justify-center">
                         <Heart className="h-12 w-12 text-muted-foreground mb-4" />
                         <p className="text-lg font-medium mb-2">Your wishlist is empty</p>

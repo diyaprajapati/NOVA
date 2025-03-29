@@ -9,6 +9,7 @@ import { Button } from "../components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../components/ui/form";
 import { Layout } from "../components/layout/Layout";
+import { useAuth } from "../providers/AuthProvider";
 
 const formSchema = z.object({
     email: z.string().email({ message: "Please enter a valid email address." }),
@@ -19,6 +20,7 @@ export default function SignIn() {
     const navigate = useNavigate();
     const [accountType, setAccountType] = useState<"user" | "brand">("user");
     const [isLoading, setIsLoading] = useState(false);
+    const { login } = useAuth();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -32,16 +34,7 @@ export default function SignIn() {
         setIsLoading(true);
 
         try {
-            // This would be replaced with actual authentication logic
-            console.log("Signing in as", accountType, "with:", values);
-
-            // Simulate API call delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            // Success message
-            toast("Signed in successfully!", {
-                description: `Signed in as ${accountType} with email: ${values.email}`,
-            });
+            await login(values.email, values.password, accountType);
 
             // Redirect to appropriate dashboard
             if (accountType === "brand") {

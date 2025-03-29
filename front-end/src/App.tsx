@@ -17,6 +17,7 @@ import SignUp from "./pages/SignUp";
 import BrandDashboard from "./pages/brand/Dashboard";
 import AddProduct from "./pages/brand/AddProduct";
 import Checkout from "./pages/Checkout";
+import { AuthProvider } from "./providers/AuthProvider";
 
 
 const queryClient = new QueryClient();
@@ -25,29 +26,31 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="dark">
       <TooltipProvider>
-        <WishlistProvider>
-          <CartProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:id" element={<ProductDetail />} />
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/categories/:id" element={<Categories />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/sign-in" element={<SignIn />} />
-                <Route path="/sign-up" element={<SignUp />} />
-                <Route path="/brand/dashboard" element={<BrandDashboard />} />
-                <Route path="/brand/products/add" element={<AddProduct />} />
-                <Route path="/checkout" element={<Checkout />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                {/* <Route path="*" element={<NotFound />} /> */}
-              </Routes>
-            </BrowserRouter>
-          </CartProvider>
-        </WishlistProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <Toaster />
+                <Sonner />
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/products/:id" element={<ProductDetail />} />
+                  <Route path="/categories" element={<Categories />} />
+                  <Route path="/categories/:id" element={<Categories />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/sign-in" element={<SignIn />} />
+                  <Route path="/sign-up" element={<SignUp />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/brand/dashboard" element={<BrandDashboard />} />
+                  <Route path="/brand/products/add" element={<AddProduct />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  {/* <Route path="*" element={<NotFound />} /> */}
+                </Routes>
+              </CartProvider>
+            </WishlistProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>

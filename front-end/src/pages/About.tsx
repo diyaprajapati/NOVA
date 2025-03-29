@@ -38,7 +38,7 @@ export default function About() {
                         <div className="grid md:grid-cols-2 gap-8 items-center">
                             <div>
                                 <img
-                                    src="https://images.unsplash.com/photo-1581092921461-eab62e97a2aa?auto=format&fit=crop&w=1000&q=80"
+                                    src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1000&q=80"
                                     alt="Tech products display"
                                     className="rounded-lg shadow-lg w-full h-auto"
                                 />
