@@ -23,6 +23,7 @@ export function Header() {
                 <div className="flex items-center">
                     <Link to="/" className="mr-10">
                         <div className="flex items-center space-x-2">
+                            <img src="./logo.png" width={30} />
                             <span className="font-bold text-xl">NOVA</span>
                         </div>
                     </Link>
